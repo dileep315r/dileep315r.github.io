@@ -1,7 +1,20 @@
 ### AWS
+#### Network implementation details
+Subnet, VPN are simulated on top of original amazon network.
+1. Each machine in amazon datacenter has amazon private ip and runs linux OS tailored for AWS. VMs in each machine is assigned a client/customer defined private ip.
+2. VM's network packet is wrapped in another packet with amazon private ip source and amazon private ip destination addresses. Wrapper contains info about VPC as well so that the VPC is checked at source and destination for security reasons.
+3. Amazon Linux OS find out the amazon private ip address for the customer packet using amazon mapping service.
+   1. Mapping service data is cached locally to avoid extra network hop for finding MAC/Ip addresses.
+   2. For hosts within the subnet, 
+      1. Packets will be broadcast to all nodes in VLAN.
+      2. Packets need not go through the subnet router.
+      3. In AWS, packets may travel through router ,not sure!!
+4. Kind of tunnel created. Customer view of network is simulated on amazon's network.
+5. Bridge server(IG gateway, VPN gateway etc..) translates amazon specific packets to the general internet packets and vice versa.
+   1. IG gateway translates private ip address of the host to the public ip and vice versa.
 
 ##### VPN
-- Virtual private cloud
+- Virtual private cloud. AWS talk says the VPN can be implemented using VRF(virtual routing and forwarding). 
 - Synonymous to a data center i.e a virtual datacenter
 - Can contain multiple physical/logical instances/services from multiple physical AZs
 - Contains several subnets
@@ -9,7 +22,7 @@
 - VPN can be configured with one IG gateway to send/receive traffic to/from the internet.
 - IG gateway is exposed as a single router to the customers, but it could have been set of routers in multiple AZs
 - IG gateway route table can be configured.
-- Route53 service provides DNS resolution services.
+- Route53 service provides DNS authoritative name service/server for custom domain.
 - Different types of LBs available. ApplicationLB, NetworkLB.
 
 ##### Region and AZ
@@ -18,17 +31,26 @@
    1. Different AZs provide fault tolerance within a single region.
 
 ##### Subnet
-1. Subnet contains instances
-2. Subnet is connected to at least one router.
-3. Subnet router route table can be configured with outbound and inbound traffic rules.
-4. Subnet router might have been connected internally to other internal routers and IG gateway routers.
-5. All IPv6 addresses are public.
-6. NACL network access control list firewall rules can be configured at Subnet level.
-7. Local target in route table keeps the traffic inside subnet and IG gateway target sends the traffic to IG gateway.
-8. If a subnet is associated with a route table that has a route to an internet gateway, it's known as a public subnet. If a subnet is associated with a route table that does not have a route to an internet gateway, it's known as a private subnet.
-9. Instances in the private subnet can't communicate with the internet over the internet gateway, even if they have public IP addresses.
-10. Each subnet must reside entirely within one Availability Zone and cannot span zones.
-11. By design, each subnet must be associated with a network ACL(NACL).
+1. Similar to subnet in datacenters.
+   1. Subnet potential benefits in traditional networks.
+      1. May reduce number of hops to reach a destination. Efficient routing.
+      2. Organize network according to organizational needs.
+      3. VLAN limits the broadcast space.
+      4. Subnet traffic stays within the subnet.
+      5. All the hosts in subnet generally stay in a similar location.
+      6. Organizing a network in an efficient way is crucial for large firms
+      7. IP addresses can be kept geographically localized meaning that a subnet can be used for specific staffing structures to reduce traffic and maintain efficiency and order.
+2. Subnet contains instances
+3. Subnet is connected to at least one router.
+4. Subnet router route table can be configured with outbound and inbound traffic rules.
+5. Subnet router might have been connected internally to other internal routers and IG gateway routers.
+6. All IPv6 addresses are public.
+7. NACL network access control list firewall rules can be configured at Subnet level.
+8. Local target in route table keeps the traffic inside subnet and IG gateway target sends the traffic to IG gateway.
+9. If a subnet is associated with a route table that has a route to an internet gateway, it's known as a public subnet. If a subnet is associated with a route table that does not have a route to an internet gateway, it's known as a private subnet.
+10. Instances in the private subnet can't communicate with the internet over the internet gateway, even if they have public IP addresses.
+11. Each subnet must reside entirely within one Availability Zone and cannot span zones.
+12. By design, each subnet must be associated with a network ACL(NACL).
 
 #### IG gateway
 1. If a subnet is associated with a route table that has a route to an internet gateway, it's known as a public subnet. If a subnet is associated with a route table that does not have a route to an internet gateway, it's known as a private subnet.
@@ -69,4 +91,5 @@
 
 ##### References
 1. [IG gateway](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html)
-2. 
+2. [Good youtube video on AWS networking](https://www.youtube.com/watch?v=3qln2u1Vr2E)
+3. Good reference for [AWS NLB source ip presevation](https://www.reddit.com/r/aws/comments/mv41vs/how_do_nlbs_preserve_the_ip_address_of_clients/)

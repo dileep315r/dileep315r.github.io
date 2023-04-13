@@ -1,24 +1,32 @@
-Latency numbers L1 cache -> 1ns, RAM -> 1/10 micro-sec, SSD -> 1/10 ms, CA-NL-CA -> 1/10 seconds. US east to Africa RTT --> 225ms
+#### System design
+#### Latency numbers
+* L1 cache -> 1ns
+* RAM -> 1/10 micro-sec
+* SSD -> 1/10 ms
+* CA-NL-CA -> 1/10 seconds
+* US east to Africa RTT --> 225ms
+* DNS lookup 20-120ms
 
-[Grokking the modern system design](https://www.educative.io/courses/grokking-modern-system-design-interview-for-engineers-managers/YQVW0zY1Opp)
-The number of servers for most of the designs are in order of single digit thousands ~1k
-Incoming network bandwidth in the order of 10Mbps and outgoing network bandwidth ~10Gbps
-Text in order of KBs and images in order of 250KBs, short videos in the order of 5MBs, 5 minute videos ~30MB
-The numbers mentioned above and the numbers mentioned below in each system are rough ballpark numbers. Might severely differ from actual numbers.
+#### [Grokking the modern system design](https://www.educative.io/courses/grokking-modern-system-design-interview-for-engineers-managers/YQVW0zY1Opp)
+* The number of servers for most of the designs are in order of single digit thousands ~1k
+* Incoming network bandwidth in the order of 10Mbps and outgoing network bandwidth ~10Gbps
+* Text in order of KBs and images in order of 250KBs, short videos in the order of 5MBs, 5 minutes videos ~30MB
+* The numbers mentioned above and the numbers mentioned below in each system are rough ballpark numbers. Might severely differ from actual numbers.
 
-Back of enveloper estimation process:
-1) Identify DAU
-2) No of Requests by each user. Size of each write request.
-3) From size of each request, number of requests and DAU --> compute storage required per day.
-4) Identify read:write ration --> number of read requests per second.
-5) QPS of the server --> DAU/QPS = number of servers.
-6) Bandwidth total_storage_per_day/(number of seconds in a day) = in bandwidth, calculate out bandwidth by using number of read requests,size of each read request.
+#### Back of enveloper estimation process:
+1. Identify DAU 
+2. No of Requests by each user. Size of each write request. 
+3. From size of each request, number of requests and DAU --> compute storage required per day. 
+4. Identify read:write ration --> number of read requests per second. 
+5. QPS of the server --> DAU/QPS = number of servers. 
+6. Bandwidth total_storage_per_day/(number of seconds in a day) = in bandwidth, calculate out bandwidth by using number of read requests,size of each read request.
 
-Websocket advantages
-1) Two way communication(server can push changes to client) and full duplex(simultaneous) connection
-2) No overhead of HTTP request response headers
-3) Long-lasting connections
+#### Websocket advantages 
+1. Two-way communication(server can push changes to client) and full duplex(simultaneous) connection 
+2. No overhead of HTTP request response headers 
+3. Long-lasting connections
 
+#### Designs
 1. RateLimiter
    1. On a standalone service or in an existing service.
    2. Hard limit, soft limit(allows 20% more requests), dynamic limit(allows if the resources are available).
@@ -31,6 +39,7 @@ Websocket advantages
        3. Fixed window or hopping window
        4. Tumbling window (divide the interval into parts and nuke the last part when new part comes in)
        5. Sliding window with log of messages (Keep all messages timestamps and keep the oldest timestamp to be within the window.)
+          1. Sample leetcode problem https://leetcode.com/problems/logger-rate-limiter/description/
        6. Sliding window without log of messages. Keep track of count of messages per fixed windows. Estimate the current sliding window number of elements using extrapolation. If the number of elements in the current sliding window is less than the rate then allow the request otherwise reject the request.
    5. Scalability
        1. Keep the counters in Redis.
@@ -46,48 +55,82 @@ Websocket advantages
    2. Sharded counters would reduce write contention.
    3. (Not convinced fully) Sharded counters can/may be used for computing top hashtags as well. Maintain counters and consider all the hashtags with counter greater than a fixed value.
 3. CDN
+   ![img](_img/cdn.png)
    1. Problem
       1. Real time applications latency below 200ms. VOIP 150ms latency.
       2. Latency if data is served directly from datacenter. Data intensive applications -- network bandwidth/congestion/MTU problems. Scarcity of data center resources
-   2. Proxy servers(server between client and origin) placed on the edge(i.e initial hops through which user connects to internet.)
+   2. get(origin to proxy), get(proxy to client), search, update, delete are the main operations.
+   3. Edge Proxy servers(server between client and origin) placed on the edge(i.e initial hops through which user connects to internet.)
       1. Replication of proxies to increase throughput. Master slave architecture can be used.
       2. Stores info in RAM or SSD
-   3. Push or Pull. Data transmitted once to CDNs. CDNs serve several users. Streaming protocols RTMP, HLS, RTSP used to serve streaming content to end users. They are mostly based on UDP and aims to increase latency over reliability.
+   4. Push or Pull. Data transmitted once to CDNs. CDNs serve several users. Streaming protocols RTMP, HLS, RTSP used to serve streaming content to end users. They are mostly based on UDP and aims to increase latency over reliability.
       1. Push for static content and pull for high traffic, dynamic(frequently) changing content.
-   4. Akamai, StackPath, Cloudflare, Rackspace, Amazon CloudFront, and Google Cloud CDN.
-   5. Availability, Scalability and reliability are important. Protection from DDos and other attacks are needed.
+      2. Low storage consumption is one of the main benefits of the pull CDN.
+   5. Akamai, StackPath, Cloudflare, Rackspace, Amazon CloudFront, and Google Cloud CDN.
+   6. Availability, Scalability and reliability are important. Protection from DDos and other attacks are needed.
       1. DNS resolves to proxy server and load balancers distribute the traffic to proxies.
-   6. Distribution systems, accounting systems, routing systems, request validation(or scrub) servers are the other auxiliary services.
-   7. Some CDNs ask proxy servers to execute scripts to produce different resolution images, content etc. Dynamic content production based on location, time, third party API data like weather. Proxy servers can update content in fellow proxy servers.
-   8. Search for items in fellow proxy servers if the content is not found locally. Cache eviction strategies are employed. Deletion op is also exposed.
-   9. To reduce the communication between the origin server and proxy servers and storage requirements at proxy servers, Compress the content, Edge side include markup language to transfer only changed content(assemble content at the CDN edge server), DASH protocol to request appropriate content based on network condition.
-   10.  Proxies arranged in tree structure to reduce data distribution load on origin server. Typically two levels of proxy servers. Use other servers in next layer in case of parent failures.
-   11. Find nearest proxy to fetch data i.e Request routing
-       1. DNS redirection: DNS system replies with another URL, IP address to distribute load to proxy servers. Akamai uses DNS redirection.
+   7. Distribution systems, accounting systems, routing systems, request validation(or scrub) servers are the other auxiliary services.
+   8. Some CDNs ask proxy servers to execute scripts to produce different resolution images, content etc. Dynamic content production based on location, time, third party API data like weather. Proxy servers can update content in fellow proxy servers.
+   9. Search for items in fellow proxy servers if the content is not found locally. Cache eviction strategies are employed. Deletion op is also exposed.
+   10. To reduce the communication between the origin server and proxy servers and storage requirements at proxy servers, Compress the content, ***Edge side include markup language*** to transfer only changed content(assemble content at the CDN edge server), DASH protocol to request appropriate content based on network condition.
+   11. Proxies arranged in tree structure to reduce data distribution load on origin server. Typically two levels of proxy servers. Use other servers in next layer in case of parent failures.
+   12. Find nearest proxy to fetch data i.e Request routing.  The nearest proxy server doesn’t necessarily mean the one that’s geographically the closest. It could be, but it’s not only the geography that matters. Other factors like network distance, bandwidth, and traffic load already on that route also matter.
+       1. DNS redirection: DNS system replies with another URL, IP address to distribute load to proxy servers. Keep short TTL to choose different servers for different requests. Akamai uses DNS redirection.
        2. Any-cast: Assign same IP to all proxies in multiple geographic locations. Let BGP figure out the nearest server.
-       3. Client selects one out of many proxy server addresses.
-       4. Redirection directly by origin server
-   12. Lease(Adaptive lease) of update notifications is TTL alternative.
-   13. Maintain connections from proxy servers to datacenter to avoid three way handshakes everytime. Internet exchange points(IXP's).
-   14. Companies like Netflix, Meta have their own CDN systems. Some hardware in ISPs and some hardware in edge PoPs(company datacenters which are distributed throughout the world close to the users or on the edge network).
+       3. Client multiplexing: client selects one out of many proxy server addresses in config/server.
+       4. HTTP Redirection directly by origin server
+   13. Content consistency with origin servers
+       1. Proxy server --> origin polling. Time to refresh interval.
+       2. TTL.
+       3. Lease(Adaptive lease) of update notifications is TTL alternative. The lease denotes the time interval for which the origin server agrees to notify the proxy server if there’s any change in the data. The proxy server must send a message requesting a lease renewal after the expiration of the lease.
+          1. The lease method helps to reduce the number of messages exchanged between the proxy and origin server.
+          2. The lease duration can be optimized dynamically according to the observed load on the proxy servers. This technique is referred to as an adaptive lease.
+   14. Maintain connections from proxy servers to datacenter to avoid three-way handshakes everytime. Internet exchange points(IXP's).
+   15. Deployment: on-prem, off-prem. Public CDN servers. Private/specialized CDN
+   16. Companies like Netflix, Meta have their own CDN systems. Some hardware in ISPs and some hardware in edge PoPs(company datacenters which are distributed throughout the world close to the users or on the edge network).
        1. Reasons can be cost, security, serviceability to all places, optimization for the specific use cases.
-   15. Place proxy servers in datacenters close to IXPs(on-prem). and place proxy servers in ISPs(off-prem).
-   16. Use S3 as source for CDN image file loads.
+       2. Netflix built Open Connect Appliance (OCA) proxy servers.
+   17. Place proxy servers in datacenters close to IXPs(on-prem). and place proxy servers in ISPs(off-prem).
+   18. Use S3 as source for CDN image file loads. 
+   19. Cost, Performance, Ease of making changes and Security of the content are the reasons for Netflix building own CDN. Netflix achieved 95% hit ratio.
 4. 64 bit Unique ID generator
-   1. Partition the ID range. Each server assigns from a single range. Special server handles the assignment of partitions to servers.
-      1. Problem: IDs are not sorted according to time.
-   2. Random UUID generation
-      1. Probability of having duplicates.
-      2. UUI string is 128 bit long. Indexing is time taking. But we can modify the UUID gen algo to generate in 64 bit range.
-   3. IDs that also preserve the order of events. Hard to achieve
-      1. Timestamps(physical and logical) as part of the ID. Add other values to increase no of IDs generated per second.
+   1. Problem: Generate IDs for distributed systems use. Uniqueness, Scalability, Availability, 64 bit numeric(enough for many years).
+   2. Solutions
+      1. Random UUID generation
+         1. Probability of having duplicates.
+         2. UUI string is 128 bit long. Indexing is time taking. But we can modify the UUID gen algo to generate in 64 bit range.
+      2. Auto-increment in database
+         1. Each database increments counter by m(shard number) for each new request. 
+         2. Fail over is difficult.
+      3. Partition the ID range. Each server assigns from a single range. Special server handles the assignment of partitions to servers.
+         1. Problem: Satisfies the requirements stated above, but the IDs are not sorted according to time.
+         2. IDs that also preserve the order of events. Hard to achieve
+   3. Unique ID with causality. We want a unique ID to do double duty—provide unique identification and also help with the causality of events. Timestamps(physical and logical) as part of the ID. Add other values to increase no of IDs generated per second.
+      1. Unix timestamps. Fact: European MiFID requires clocks to be within 100 microseconds of UTC to detect anomalies during high-volume/high-speed market trades.
+         1. Append server id to unix timestamp to solve single point of failure problem
+         2. Concurrent events will have the same timestamp. IDs are no longer unique
+      2. Twitter snowflake
+         ![img](_img/twitter-snowflake.png)
+         1. We can use some bits out of our targeted 64 bits for storing time and the remaining for other information.
+            1. Sign bit. Any programming environment using these identifiers interprets them as positive integers.
+            2. Time stamp. 41 bits. Epoch start time can be d/m/2023. 1k identifiers per second, takes 70 years for depletion.
+            3. Worker number. 10 bits: Server id that generated the number.
+            4. Sequence number. 12 bits. Increment for every request and reset for overflow.
+         2. Problems
+            1. Clock drifts
+            2. IDs wasted for idle time.
+      3. True time API for clock drift mitigation
+      4. Vector clocks or lamport timestamps
+   ![img](_img/id-generator.png)
+
 5. Distributed search functionality for youtube.
    1. DAU 3 million. 1k RPS per server. Network bandwidth in 1Mbps, out 60Mbps. No of servers 3k. Storage 1.8GB/day without video actual content.
    2. Indexer prepares the inverted index. Use map reduce to prepare the index. Compute index once and replicate for fault tolerance.
-   3. Searcher searches using the index. LB sends user traffic to searchers.
-   4. Partition the index by document. Document partitioning instead of term partitioning. See [sharding](./sharding.html) notes.
-   5. Indexer and Searchers deployed in separate nodes.
-   6. Load data searcher's data from Indexer output.
+   3. We keep the index in the RAM to support the low latency of the search.
+   4. Searcher searches using the index. LB sends user traffic to searchers.
+   5. Partition the index by document. Document partitioning instead of term partitioning. See [sharding](./sharding.html) notes.
+   6. Indexer and Searchers deployed in separate nodes.
+   7. Load data searcher's data from Indexer output.
 6. Yelp system design
    1. DAU is 60 million. 8k RPS per server. Network bandwidth in 51 kbps, out 300 Gbps. No of servers 7.5k. 500M places. Storage 835 GB.
    2. Quad trees to store the places. Connect child nodes of sibling segments to perform range search easily.
@@ -175,7 +218,64 @@ Websocket advantages
        5. Websockets to receive edits and send updates to all the users.
        6. View counters are aggregated from PubSub events and stored to NoSQL. ViewCounts are not consistent.
        7. Operational transformation and [CRDTs](https://starting-fresh.medium.com/akka-java-tutorials-part-1-akka-distributed-data-e1de6bbe6286) are solution for resolving conflicting edits. Not sure about full requirements of those algorithms.
+12. Search type ahead
+    1. Ideally 200ms response time. User types a key every 160ms on average. Fast typing, no suggestion required.
+    2. 3.5B queries per day, 15 chars per query. 21TB per year. 9 Mbps in, 1.4 Gbps out. 8k RPS per server. Total 76 servers.
+    3. Trie to store the strings. Club the nodes till the node with at-least two children to save space and time.
+       1. Store and Serve the trie from RAM for fast response times.
+       2. Partition and replicate the trie by key-range or hash partitioning to distribute the load among multiple servers. Maintain the partition mappings in zookeeper.
+       3. Store the frequencies of the phrases in the leaf node.
+       4. Store the precomputed top k phrases for each/popular inner nodes on inner nodes.
+       5. Frequencies can overflow, normalize the frequencies to mitigate overflow problem.
+       6. Do not update tries for each incoming request
+          1. Compute the phrase frequencies using Map-Reduce every 15 minutes
+          2. Store the computed frequencies in Cassandra store.
+          3. Build trie from the data stored in Cassandra database once in every 15 minutes.
+          4. Build a new trie in the background and switch to the new trie once the new trie is built.
+          5. Optionally the trie built can be stored in MongoDB database.
+          6. Use sampling to select some queries out of all search queries to reduce resource usage in building the trie.
+    4. Websocket protocol to transfer data
+13. Web crawler
+    1. 5B documents. 10 PB storage. 60seconds to per document. 3k threads to crawl in a day. 277Mbps out, 960Gbps in.
+    2. Websites usually host a robot.txt file, which communicates domain-specified throttles/limitations to the crawler.
+    3. Robot exclusions file of sites guide the search engines
+    4. Priority of URLS according to importance. Crawl frequency varies across sites. News sites crawl more frequently.
+    5. Check duplicate URLs and content while crawling, store the content in Blob store for indexing.
+    6. Self throttle the crawler to not overload the sites.
+    7. Intentional/Unintentional Crawl trap makes the crawler crawl same sites indefinitely. Identify and store the crawl traps.
+    8. Specialised DNS server to quickly resolve IP addresses.
+    9. Parallelize crawling. Multiple workers. Each worker crawls set of URLs. Workers get URLs from scheduler.
+    10. Extract and store the URLs back in the scheduler service. Scheduler users in memory priority queue as well as the database.
+    11. Re-crawl the sites according to priority and crawl frequency.
+14. Whatsapp messenger
+    1. Availability, Consistency(of order of messages), Scalability. Availability can be compromised for the sake of consistency.
+    2. 100 B messages per day. Message expires in 30 days on the server. min 300 TB per month. 900 Mbps in, 900 Mbps out.
+    3. Original whatsapp
+       1. 10 M connections on a single server. Server is highly optimized for the workload to achieve the 10 M connections scale. We can often optimize a general-purpose server for special tasks by careful performance engineering of the full software stack.
+       2. 200 chat servers.
+       3. Websocket servers connect to users through web sockets. Websocket manager stores the user to web socket server mapping in Redis cache.
+       4. Messages are stored in Amnesia database if the user is offline. Messages are deleted from the database after 30 days.
+       5. Images and documents are stored in blob store. Popular images will be pushed to CDN.
+       6. Groups metadata stored in MySQL database. Group messages sent to kafka topics. Kafka consumer sends messages to group users.
+       7. Websocket servers geographically distributed to reduce latency.
+15. Twitter
+    1. Original twitter design
+       1. Sharded counters, place shard close to the users.
+       2. Uses variety of databases MySQL, PostGreSQL, RocksDB on top of Manhattan(in house key value store), BigQuery(google data warehouse), Google PubSub, Kafka, BigQuery, in-house cache Pelikan, Flock graph database, in house blob store.
+       3. Store the ads data in MySQL. Tweets in Manhattan. User follower relationships in FlockDB. Zipkin for distributed tracing. Splunk for log analysis.
+       4. Client side load balancing i.e kubernetes decentralised load balancing.
+          1. Select two servers randomly, compare the load and select the one with low load. Better load distribution than random selection.
+          2. Connection pool, maintain connections to set of servers instead of all servers to reduce connection overhead. Use continuous ring strategy to select servers out of all servers.
+16. Timeline
+    1. Push approach avoids querying for latest posts of all the users that the user follows. When a user posts a post, post gets added to the followers timeline. Use stream processing to maintain the timeline cache. Materialized view maintenance
+17. Distributed job scheduler
+    1. More of creativity of requirements than the actual system design of the scheduler. Some other system designs are similar. 
+18. Message queue
+    1. Advantages
+       1. Improve performance: Non-essential tasks are removed from critical path
+       2. Fault tolerance: Failure of consumer doesn't impact producer.
+       3. Decoupling
+    2. Use-case(s): Sending emails, Post processing data(generate different bitrate videos offline), recommender systems
 
-### References
-1. [High scalability all time favourites](http://highscalability.com/all-time-favorites/)
-
+#### Chat system design
+1. 

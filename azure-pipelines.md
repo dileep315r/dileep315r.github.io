@@ -29,7 +29,9 @@
     8. Use templates to define variables in one file that are used in multiple pipelines.
     9. For YAML pipelines, a deployment typically refers to a deployment job. A deployment job is a collection of steps that are run sequentially against an environment. You can use strategies like run once, rolling, and canary for deployment jobs.
     10. For YAML pipelines, the build and release stages are in one, multi-stage pipeline.
-    12. References
+    11. Parameters are “scoped” to the file they are defined with. This is due to them being expanded when the pipeline is first compiled.
+    12. Variables can be defined at root,job and other scopes.
+    13. References
           1. https://learn.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
           2. https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/jobs-job-strategy?view=azure-pipelines
           3. https://learn.microsoft.com/en-us/azure/devops/pipelines/process/runs?view=azure-devops#process-the-pipeline

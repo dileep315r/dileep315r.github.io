@@ -1,4 +1,5 @@
 #### Pipelines
+![img](https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/media/key-concepts-overview.svg?view=azure-devops)
 1. Build stage and deploy stage
    1. Build stage is used for compiling, testing and building artifact.
    2. Deply stage is used for deploying an artifact to an environment.
@@ -24,9 +25,13 @@
     4. Variables give you a convenient way to get key bits of data into various parts of the pipeline. The most common use of variables is to define a value that you can then use in your pipeline.
     5. When you define the same variable in multiple places with the same name, the most locally scoped variable wins. So, a variable defined at the job level can override a variable set at the stage level. A variable defined at the stage level overrides a variable set at the pipeline root level. A variable set in the pipeline root level overrides a variable set in the Pipeline settings UI.
     6. In a pipeline, template expression variables (${{ variables.var }}) get processed at compile time, before runtime starts. Macro syntax variables ($(var)) get processed during runtime before a task runs. Runtime expressions ($[variables.var]) also get processed during runtime but are intended to be used with conditions and expressions. When you use a runtime expression, it must take up the entire right side of a definition.
-    7. References
+    7. In YAML pipelines, you can set variables at the root, stage, and job level. You can also specify variables outside of a YAML pipeline in the UI. When you set a variable in the UI, that variable can be encrypted and set as secret.
+    8. Use templates to define variables in one file that are used in multiple pipelines.
+    9. References
        1. https://learn.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
        2. https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/jobs-job-strategy?view=azure-pipelines
        3. https://learn.microsoft.com/en-us/azure/devops/pipelines/process/runs?view=azure-devops#process-the-pipeline
+       4. https://learn.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
+       5. https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/key-pipelines-concepts?view=azure-devops
       
        

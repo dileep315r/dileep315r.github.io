@@ -15,4 +15,14 @@
     2. stringstream is useful
 10. goto allows to make an absolute jump to another point in the program. This unconditional jump ignores nesting levels, and does not cause any automatic stack unwinding. Therefore, it is a feature to use with care, and preferably within the same block of statements, especially in the presence of local variables.
 11. The for-loop has another syntax, which is used exclusively with ranges: ```for ( declaration : range ) statement;```
-12. 
+12. Scopes
+    1. Local scope
+    2. Global scope
+    3. Namespace scope
+       1. Namespaces can be split: Two segments of a code can be declared in the same namespace i.e namespace doesn't need to be defined at a single place. You can define partial namespace at one place and another part at another place.
+       2. Namespaces can even extend across different translation units (i.e., across different files of source code).
+       3. The keyword using introduces a name into the current declarative region (such as a block), thus avoiding the need to qualify the name.
+       4. using and using namespace have validity only in the same block in which they are stated or in the entire source code file if they are used directly in the global scope.
+       5. All the entities (variables, types, constants, and functions) of the standard C++ library are declared within the std namespace.
+       6. Many programmers prefer to qualify each of the elements of the standard library used in their programs.
+       7. The storage for variables with global or namespace scope is allocated for the entire duration of the program. This is known as static storage, and it contrasts with the storage for local variables (those declared within a block). 

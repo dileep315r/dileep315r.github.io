@@ -25,4 +25,6 @@
        4. using and using namespace have validity only in the same block in which they are stated or in the entire source code file if they are used directly in the global scope.
        5. All the entities (variables, types, constants, and functions) of the standard C++ library are declared within the std namespace.
        6. Many programmers prefer to qualify each of the elements of the standard library used in their programs.
-       7. The storage for variables with global or namespace scope is allocated for the entire duration of the program. This is known as static storage, and it contrasts with the storage for local variables (those declared within a block). 
+       7. The storage for variables with global or namespace scope is allocated for the entire duration of the program. This is known as static storage, and it contrasts with the storage for local variables (those declared within a block).
+       8. The storage for variables with global or namespace scope is allocated for the entire duration of the program. This is known as static storage, and it contrasts with the storage for local variables (those declared within a block). These use what is known as automatic storage. The storage for local variables is only available during the block in which they are declared; after that, that same storage may be used for a local variable of some other function, or used otherwise.
+       9. 

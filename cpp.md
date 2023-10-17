@@ -34,4 +34,6 @@
 17. This is due to the fact that strings have a dynamic size determined during runtime, while the size of arrays is determined on compilation, before the program runs.
 18. The variable that stores the address of another variable (like foo in the previous example) is what in C++ is called a pointer.
 19. Due to the ability of a pointer to directly refer to the value that it points to, a pointer has different properties when it points to a char than when it points to an int or a float. Once dereferenced, the type needs to be known. And for that, the declaration of a pointer needs to include the data type the pointer is going to point to.
-20. the size in memory of a pointer depends on the platform where the program runs
+20. the size in memory of a pointer depends on the platform where the program runs.
+21. Note that the asterisk (*) used when declaring a pointer only means that it is a pointer (it is part of its type compound specifier), and should not be confused with the dereference operator seen a bit earlier, but which is also written with an asterisk (*). They are simply two different things represented with the same sign.
+

@@ -32,4 +32,5 @@
 15. In fact, because string literals are regular arrays, they have the same restrictions as these, and cannot be assigned values.
 16. In C++, even though the standard library defines a specific type for strings (class string), still, plain arrays with null-terminated sequences of characters (C-strings) are a natural way of representing strings in the language; in fact, string literals still always produce null-terminated character sequences, and not string objects.
 17. This is due to the fact that strings have a dynamic size determined during runtime, while the size of arrays is determined on compilation, before the program runs.
-18. The variable that stores the address of another variable (like foo in the previous example) is what in C++ is called a pointer. 
+18. The variable that stores the address of another variable (like foo in the previous example) is what in C++ is called a pointer.
+19. Due to the ability of a pointer to directly refer to the value that it points to, a pointer has different properties when it points to a char than when it points to an int or a float. Once dereferenced, the type needs to be known. And for that, the declaration of a pointer needs to include the data type the pointer is going to point to.

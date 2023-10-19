@@ -87,7 +87,47 @@ C++ allows operations with pointers to functions. The typical use of this is for
 40. There is a substantial difference between declaring a normal array and allocating dynamic memory for a block of memory using new. The most important difference is that the size of a regular array needs to be a constant expression, and thus its size has to be determined at the moment of designing the program, before it is run, whereas the dynamic memory allocation performed by new allows to assign memory during runtime using any variable value as size.
 41. The other method is known as nothrow, and what happens when it is used is that when a memory allocation fails, instead of throwing a bad_alloc exception or terminating the program, the pointer returned by new is a null pointer, and the program continues its execution normally.
 42. The value passed as argument to delete shall be either a pointer to a memory block previously allocated with new, or a null pointer (in the case of a null pointer, delete produces no effect).
-43. 
+43. Supports struct type. Syntax given below. Strcture is a value type unlike arrays which is a pointer type.
+    ```
+    struct type_name {
+    member_type1 member_name1;
+    member_type2 member_name2;
+    member_type3 member_name3;
+    .
+    .
+    } object_names;
+    ```
+45. The arrow operator (->) is a dereference operator that is used exclusively with pointers to objects that have members. This operator serves to access the member of an object directly from its address.
+46. Both aliases defined with typedef and aliases defined with using are semantically equivalent. The only difference being that typedef has certain limitations in the realm of templates that using has not. Therefore, using is more generic, although typedef has a longer history and is probably more common in existing code.
+47. Type aliases can be used to reduce the length of long or confusing type names, but they are most useful as tools to abstract programs from the underlying types they use. For example, by using an alias of int to refer to a particular kind of parameter instead of using int directly, it allows for the type to be easily replaced by long (or some other type) in a later version, without having to change every instance where it is used.
+48. Unions allow one portion of memory to be accessed as different data types. Its declaration and use is similar to the one of structures, but its functionality is totally different. This creates a new union type, identified by type_name, in which all its member elements occupy the same physical space in memory. 
+    ```
+    union type_name {
+      member_type1 member_name1;
+      member_type2 member_name2;
+      member_type3 member_name3;
+      .
+      .
+    } object_names;
+    ```
+ 49.  The size of this type is the one of the largest member element. Each of these members is of a different data type. But since all of them are referring to the same location in memory, the modification of one of the members will affect the value of all of them. It is not possible to store different values in them in a way that each is independent of the others. One of the uses of a union is to be able to access a value either in its entirety or as an array or structure of smaller elements.
+    ```
+     union mix_t {
+      int l;
+      struct {
+        short hi;
+        short lo;
+        } s;
+      char c[4];
+    
+    } mix;
+```
+ 51.  The exact alignment and order of the members of a union in memory depends on the system, with the possibility of creating portability issues.
+ 52.  When unions are members of a class (or structure), they can be declared with no name. In this case, they become anonymous unions, and its members are directly accessible from objects by their member names. For example, see the differences between these two structure declarations:
+53. Two different enums in C++. enum type and enum class(or struct) types. Later tyoe creates real enums.
+54. But, in C++, it is possible to create real enum types that are neither implicitly convertible to int and that neither have enumerator values of type int, but of the enum type itself, thus preserving type safety.
+54. 
+
 
 
 

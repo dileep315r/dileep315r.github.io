@@ -126,7 +126,27 @@ C++ allows operations with pointers to functions. The typical use of this is for
  52.  When unions are members of a class (or structure), they can be declared with no name. In this case, they become anonymous unions, and its members are directly accessible from objects by their member names. For example, see the differences between these two structure declarations:
 53. Two different enums in C++. enum type and enum class(or struct) types. Later tyoe creates real enums.
 54. But, in C++, it is possible to create real enum types that are neither implicitly convertible to int and that neither have enumerator values of type int, but of the enum type itself, thus preserving type safety.
-54. 
+54. Classes allow programming using object-oriented paradigms: Data and functions are both members of the object
+55. In order to avoid that, a class can include a special function called its constructor, which is automatically called whenever a new object of this class is created, allowing the class to initialize member variables or allocate storage.
+56. Constructors cannot be called explicitly as if they were regular member functions. They are only executed once, when a new object of that class is created.
+57. The default constructor is the constructor that takes no parameters, and it is special because it is called when an object is declared but is not initialized with any arguments. In the example above, the default constructor is called for rectb. Note how rectb is not even constructed with an empty set of parentheses - in fact, empty parentheses cannot be used to call the default constructor:
+58. First, constructors with a single parameter can be called using the variable initialization syntax (an equal sign followed by the argument). ```class_name object_name = initialization_value;```
+59. More recently, C++ introduced the possibility of constructors to be called using uniform initialization, which essentially is the same as the functional form, but using braces ({}) instead of parentheses (())
+60. An advantage of uniform initialization over functional form is that, unlike parentheses, braces cannot be confused with function declarations, and thus can be used to explicitly call default constructors:
+61. When a constructor is used to initialize other members, these other members can be initialized directly, without resorting to statements in its body. This is done by inserting, before the constructor's body, a colon (:) and a list of initializations for class members. For example, consider a class with the following declaration:
+    1. ```Rectangle::Rectangle (int x, int y) : width(x), height(y) { }```
+    2. For members of fundamental types, it makes no difference which of the ways above the constructor is defined, because they are not initialized by default, but for member objects (those whose type is a class), if they are not initialized after the colon, they are default-constructed.
+62. Default-constructing all members of a class may or may always not be convenient: in some cases, this is a waste (when the member is then reinitialized otherwise in the constructor), but in some other cases, default-construction is not even possible (when the class does not have a default constructor). In these cases, members shall be initialized in the member initialization list.
+63. In this example, class Cylinder has a member object whose type is another class (base's type is Circle). Because objects of class Circle can only be constructed with a parameter, Cylinder's constructor needs to call base's constructor, and the only way to do this is in the member initializer list.
+64. Classes can be defined not only with keyword class, but also with keywords struct and union.
+65. The keyword struct, generally used to declare plain data structures, can also be used to declare classes that have member functions, with the same syntax as with keyword class. The only difference between both is that members of classes declared with the keyword struct have public access by default, while members of classes declared with the keyword class have private access by default. For all other purposes both keywords are equivalent in this context.
+66. Conversely, the concept of unions is different from that of classes declared with struct and class, since unions only store one data member at a time, but nevertheless they are also classes and can thus also hold member functions. The default access in union classes is public.
+67. Operators are overloaded by means of operator functions, which are regular functions with special names: their name begins by the operator keyword followed by the operator sign that is overloaded. The syntax is: ```type operator sign (parameters) { /*... body ...*/ }```
+68. A reference type is a type that acts as an alias, or an alternative name, for another variable. It’s denoted by the & symbol. Once a reference is created, it cannot be later made to reference another object; it cannot be reseated. This is often done at the time of variable declaration.
+69. Notice that some operators may be overloaded in two forms: either as a member function or as a non-member function
+70. The keyword this represents a pointer to the object whose member function is being executed.
+71. 
+
 
 
 

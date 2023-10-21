@@ -145,9 +145,53 @@ C++ allows operations with pointers to functions. The typical use of this is for
 68. A reference type is a type that acts as an alias, or an alternative name, for another variable. It’s denoted by the & symbol. Once a reference is created, it cannot be later made to reference another object; it cannot be reseated. This is often done at the time of variable declaration.
 69. Notice that some operators may be overloaded in two forms: either as a member function or as a non-member function
 70. The keyword this represents a pointer to the object whose member function is being executed.
-71. 
-
-
+71. A static data member of a class is also known as a "class variable", because there is only one common variable for all the objects of that same class, sharing the same value: i.e., its value is not different from one object of this class to another.
+72. In fact, static members have the same properties as non-member variables but they enjoy class scope. For that reason, and to avoid them to be declared several times, they cannot be initialized directly in the class, but need to be initialized somewhere outside it. As in the previous example: ```int Dummy::n=0;```
+73. Because it is a common variable value for all the objects of the same class, it can be referred to as a member of any object of that class or even directly by the class name ```cout << a.n;cout << Dummy::n;```
+74. Classes can also have static member functions. These represent the same: members of a class that are common to all object of that class, acting exactly as non-member functions but being accessed like members of the class. Because they are like non-member functions, they cannot access non-static members of the class (neither member variables nor member functions). They neither can use the keyword this.
+75. Therefore, const references provide functionality similar to passing arguments by value, but with an increased efficiency for parameters of large types. That is why they are extremely popular in C++ for arguments of compound types. Note though, that for most fundamental types, there is no noticeable difference in efficiency, and in some cases, const references may even be less efficient!
+76. Several string literals can be concatenated to form a single string literal simply by separating them by one or more blank spaces, including tabs, newlines, and other valid blank characters.
+77. All the character literals and string literals described above are made of characters of type char. A different character type can be specified by using one of the following prefixes
+78. In raw strings, backslashes and single and double quotes are all valid characters; the content of the literal is delimited by an initial R"sequence( and a final )sequence", where sequence is any sequence of characters (including an empty sequence). The content of the string is what lies inside the parenthesis, ignoring the delimiting sequence itself.  ```R"&%$(string with \backslash)&%$"```
+79. On the flip side, functions with reference parameters are generally perceived as functions that modify the arguments passed, because that is why reference parameters are actually for.
+80. Therefore, const references provide functionality similar to passing arguments by value, but with an increased efficiency for parameters of large types. That is why they are extremely popular in C++ for arguments of compound types. Note though, that for most fundamental types, there is no noticeable difference in efficiency, and in some cases, const references may even be less efficient!
+81. But not the other way around! As a safety feature, pointers to const are not implicitly convertible to pointers to non-const.
+82. The access to its data members from outside the class is restricted to read-only, as if all its data members were const for those accessing them from outside the class. Note though, that the constructor is still called and is allowed to initialize and modify these data members:
+83. Member functions specified to be const cannot modify non-static data members nor call other non-const member functions. In essence, const members shall not modify the state of an object. ```int get() const {return x;}```
+84. const objects are limited to access only member functions marked as const, but non-const objects are not restricted and thus can access both const and non-const member functions alike.
+85. You may think that anyway you are seldom going to declare const objects, and thus marking all members that don't modify the object as const is not worth the effort, but const objects are actually very common. Most functions taking classes as parameters actually take them by const reference, and thus, these functions can only access their const members:
+86. When an object of a class is qualified as a const object ```const MyClass myobject;``` The access to its data members from outside the class is restricted to read-only, as if all its data members were const for those accessing them from outside the class. Note though, that the constructor is still called and is allowed to initialize and modify these data members:
+87. Member functions can be overloaded on their constness: i.e., a class may have two member functions with identical signatures except that one is const and the other is not: in this case, the const version is called only when the object is itself const, and the non-const version is called when the object is itself non-const.
+88. Just like we can create function templates, we can also create class templates, allowing classes to have members that use template parameters as types. For example. Confused by so many T's? There are three T's in this declaration: The first one is the template parameter. The second T refers to the type returned by the function. And the third T (the one between angle brackets) is also a requirement: It specifies that this function's template parameter is also the class template parameter.
+    ```
+     // class templates
+    #include <iostream>
+    using namespace std;
+    
+    template <class T>
+    class mypair {
+        T a, b;
+      public:
+        mypair (T first, T second)
+          {a=first; b=second;}
+        T getmax ();
+    };
+    
+    template <class T>
+    T mypair<T>::getmax ()
+    {
+      T retval;
+      retval = a>b? a : b;
+      return retval;
+    }
+    
+    int main () {
+      mypair <int> myobject (100, 75);
+      cout << myobject.getmax();
+      return 0;
+    }
+```
+89. 
 
 
 

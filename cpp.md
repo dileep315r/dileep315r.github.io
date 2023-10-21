@@ -191,7 +191,38 @@ C++ allows operations with pointers to functions. The typical use of this is for
       return 0;
     }
 ```
-89. 
+89. Template specialization. For example, let's suppose that we have a very simple class called mycontainer that can store one element of any type and that has just one member function called increase, which increases its value. But we find that when it stores an element of type char it would be more convenient to have a completely different implementation with a function member uppercase, so we decide to declare a class template specialization for that type:
+90. Special member functions are member functions that are implicitly defined as member of classes under certain circumstances.
+    1. Default constructor
+    2. Destructor
+    3. Copy constructor
+    4. Copy assignment
+    5. Move constructor
+    6. Move assignment
+91. But as soon as a class has some constructor taking any number of parameters explicitly declared, the compiler no longer provides an implicit default constructor, and no longer allows the declaration of new objects of that class without arguments.
+92. Destructors fulfill the opposite functionality of constructors: They are responsible for the necessary cleanup needed by a class when its lifetime ends. The classes we have defined in previous chapters did not allocate any resource and thus did not really require any clean up.
+93. The destructor for an object is called at the end of its lifetime; in the case of foo and bar this happens at the end of function main.
+94. A copy constructor is a constructor whose first parameter is of type reference to the class itself (possibly const qualified) and which can be invoked with a single argument of this type. This default copy constructor may suit the needs of many classes.
+95. Copy assignment
+    ```
+     MyClass foo;
+    MyClass bar (foo);       // object initialization: copy constructor called
+    MyClass baz = foo;       // object initialization: copy constructor called
+    foo = bar;               // object already initialized: copy assignment called 
+    ```
+96. The copy assignment operator is an overload of operator= which takes a value or reference of the class itself as parameter. The return value is generally a reference to *this (although this is not required). For example, for a class MyClass, the copy assignment may have the following signature: ```MyClass& operator= (const MyClass&);```
+97. The copy assignment operator is also a special function and is also defined implicitly if a class has no custom copy nor move assignments (nor move constructor) defined.
+98. Unnamed objects are objects that are temporary in nature, and thus haven't even been given a name. Typical examples of unnamed objects are return values of functions or type-casts.
+99. Using the value of a temporary object such as these to initialize another object or to assign its value, does not really require a copy: the object is never going to be used for anything else, and thus, its value can be moved into the destination object. These cases trigger the move constructor and move assignments:
+100. The move constructor is called when an object is initialized on construction using an unnamed temporary. Likewise, the move assignment is called when an object is assigned the value of an unnamed temporary:
+101. The move constructor and move assignment are members that take a parameter of type rvalue reference to the class itself. An rvalue reference is specified by following the type with two ampersands (&&). As a parameter, an rvalue reference matches arguments of temporaries of this type.
+102. The concept of moving is most useful for objects that manage the storage they use, such as objects that allocate storage with new and delete. In such objects, copying and moving are really different operations:
+    - Copying from A to B means that new memory is allocated to B and then the entire content of A is copied to this new memory allocated for B.
+    - Moving from A to B means that the memory already allocated to A is transferred to B without allocating any new storage. It involves simply copying the pointer.
+103. Compilers already optimize many cases that formally require a move-construction call in what is known as Return Value Optimization. Most notably, when the value returned by a function is used to initialize an object. In these cases, the move constructor may actually never get called.
+104. n principle, private and protected members of a class cannot be accessed from outside the same class in which they are declared. However, this rule does not apply to "friends".
+105. Friends are functions or classes declared with the friend keyword.
+106. 
 
 
 

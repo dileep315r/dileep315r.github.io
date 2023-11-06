@@ -6,7 +6,11 @@
 6. Bear in mind that the Android UI toolkit is not thread-safe. So, don't manipulate your UI from a worker thread. Do all manipulation to your user interface from the UI thread. There are two rules to Android's single-thread model:
   1. Don't block the UI thread.
   2. Don't access the Android UI toolkit from outside the UI thread.
-3. 
+7. This is primarily true for methods that can be called remotely, such as methods in a bound service. When a call on a method implemented in an IBinder originates in the same process in which the IBinder is running, the method is executed in the caller's thread. However, when the call originates in another process, the method executes in a thread chosen from a pool of threads that the system maintains in the same process as the IBinder. It's not executed in the UI thread of the process.
+8. Android offers a mechanism for IPC using RPCs, in which a method is called by an activity or other application component but executed remotely in another process, with any result returned back to the caller. This entails decomposing a method call and its data to a level the operating system can understand, transmitting it from the local process and address space to the remote process and address space, and then reassembling and reenacting the call there.
+9. A task is a collection of activities that users interact with when trying to do something in your app. These activities are arranged in a stack called the back stack in the order in which each activity is opened.
+10. Because the activities in the back stack are never rearranged, if your app lets users start a particular activity from more than one activity, a new instance of that activity is created and pushed onto the stack, rather than bringing any previous instance of the activity to the top. As such, one activity in your app might be instantiated multiple times, even from different tasks
+11. 
 
 #### References
    1. https://web.archive.org/web/20081217032436/http://code.google.com/android/what-is-android.html
@@ -15,4 +19,6 @@
    3. [Common mistakes to avoid to improve performance](https://developer.android.com/topic/performance/memory)
    4. https://developer.android.com/guide/components/processes-and-threads
    5. https://developer.android.com/guide/topics/processes/process-lifecycle
-   6. 
+   6. https://developer.android.com/guide/components/services
+   7. https://developer.android.com/guide/components/activities/tasks-and-back-stack
+   8. 

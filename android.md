@@ -10,7 +10,8 @@
 8. Android offers a mechanism for IPC using RPCs, in which a method is called by an activity or other application component but executed remotely in another process, with any result returned back to the caller. This entails decomposing a method call and its data to a level the operating system can understand, transmitting it from the local process and address space to the remote process and address space, and then reassembling and reenacting the call there.
 9. A task is a collection of activities that users interact with when trying to do something in your app. These activities are arranged in a stack called the back stack in the order in which each activity is opened.
 10. Because the activities in the back stack are never rearranged, if your app lets users start a particular activity from more than one activity, a new instance of that activity is created and pushed onto the stack, rather than bringing any previous instance of the activity to the top. As such, one activity in your app might be instantiated multiple times, even from different tasks
-11. 
+11. On Android, storage isn’t used for swap space like it is on other Linux implementations since frequent writing can cause wear on this memory, and shorten the life of the storage medium.
+12. 
 
 #### References
    1. https://web.archive.org/web/20081217032436/http://code.google.com/android/what-is-android.html

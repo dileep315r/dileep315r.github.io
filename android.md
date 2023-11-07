@@ -28,4 +28,4 @@
    6. https://developer.android.com/guide/components/services
    7. https://developer.android.com/guide/components/activities/tasks-and-back-stack
    8. https://developer.android.com/training/testing/fundamentals
-   9. 
+   9. https://developer.android.com/training/testing/instrumented-tests/ui-tests

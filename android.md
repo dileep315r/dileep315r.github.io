@@ -11,7 +11,12 @@
 9. A task is a collection of activities that users interact with when trying to do something in your app. These activities are arranged in a stack called the back stack in the order in which each activity is opened.
 10. Because the activities in the back stack are never rearranged, if your app lets users start a particular activity from more than one activity, a new instance of that activity is created and pushed onto the stack, rather than bringing any previous instance of the activity to the top. As such, one activity in your app might be instantiated multiple times, even from different tasks
 11. On Android, storage isn’t used for swap space like it is on other Linux implementations since frequent writing can cause wear on this memory, and shorten the life of the storage medium.
-12. 
+12. With a testable app architecture, the code follows a structure that allows you to easily test different parts of it in isolation. Testable architectures have other advantages, such as better readability, maintainability, scalability, and reusability.
+13. Common decoupling techniques include the following:
+    1. Split an app into layers such as Presentation, Domain, and Data. You can also split an app into modules, one per feature.
+    2. Avoid adding logic to entities that have large dependencies, such as activities and fragments.      3. Use these classes as entry points to the framework and move UI and business logic elsewhere, such as to a Composable, ViewModel, or domain layer.
+    4. Avoid direct framework dependencies in classes containing business logic. For example, don't use Android Contexts in ViewModels.
+    5. Make dependencies easy to replace. For example, use interfaces instead of concrete implementations. Use Dependency injection even if you don't use a DI framework.
 
 #### References
    1. https://web.archive.org/web/20081217032436/http://code.google.com/android/what-is-android.html
@@ -22,4 +27,5 @@
    5. https://developer.android.com/guide/topics/processes/process-lifecycle
    6. https://developer.android.com/guide/components/services
    7. https://developer.android.com/guide/components/activities/tasks-and-back-stack
-   8. 
+   8. https://developer.android.com/training/testing/fundamentals
+   9. 

@@ -12,4 +12,10 @@
 5. Body of if statements can also be another function.
 
 #### Function structure
-1. 
+1. Three arguments at max to a function.
+2. Boolean function declares to the world that it does two things. Function should do only one thing.
+3. Don't use output arguments.
+4. Don't use null as pseudo boolean. Don't pass nulls as arguments. Instead two functions to handle null(no arg function) and non null case.
+5. Defensive programming is bad for internal use cases. Public facing APIs keep null checks. Internal code, rely on tech cases to make sure that the nulls are never passed.
+6. Step down rule to order functions in a class: Public functions on the top, high level private function, lesser high level private functions, small private functions. Abstract to detailed. Scisors rule, public at top, private below, scissors cut the paper and give top paper to the user. Put public variables followed by private variables at the top of the class. No back references. No function below calls a function above.
+7. 

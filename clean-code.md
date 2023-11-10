@@ -28,4 +28,34 @@
 14. Prefer to use the exceptions scoped to the class. Exception name and the context should give most of the information. Pass the message only if it is really necessary.
 15. Return null values as output in extreme cases. Prefer to throw an exception instead. Suggested to avoid the functions returning error codes pattern.
 16. Checked exceptions are bad. Changes to the overriden method exception in the signature leads to modification of the parent method signature which is an inverse dependency.
-17. 
+
+### Form
+1. Comments
+   1. Best comment is the comment not written. Comments and code tends to go out of date. If you write the same info in multiple forms, they tend to diverge and become inconsistent.
+   2. "The only reliable documentation of a computer "program is the code itself. "The reason is simple. "Whenever there are multiple representations "of a program, the chance for discrepancy exists. "If the code is in error, artistic flow charts "and detailed comments are to no avail. 
+   3. Every comment is an aknowledgement of the failure to express well.
+   4. No html in comments as the users can't understand them easily. Comments should only contain the information for the readaer of the code.
+   5. Big banner comments are a big no. Since we almost always ignore them.
+   6. Nothing can be quite so useful as a well documented public API. If you're using a tool, like Javadoc, or some other automated documentation tool, you should certainly write nice documents for your public APIs. Of course, you should also make sure that your function signatures are self-explanatory. And, keep in mind the best public API documentation is the documentation you don't have to write. 
+   7. Comments should describe new information. No redundant information in comments.
+   8. Comments also rot because they tend to be non-local. When you change a local line of code in some module in order to fix a bug, or add a new feature, how do you know that there's not some comment somewhere else in the code that you just invalidated?
+   9. Code should document itself.
+   10. No TODO comments. Use issue tracking systems instead.
+   11. No mumbling in comments.
+   12. Journal comments. You do have a source code control system, right? Well, then us it.
+   13. When you see commented out code, you must delete it. Exponge it from the source code. Don't read it, don't touch it, don't try to understand it.
+   14. Rather than using comments to describe what your code does, learn how to use explanatory variables and names. 
+2. Dead code: Remove dead code, version control system tracks them anyway.
+3. Line length: Remember, never make your readers scroll right. 120 chars at max.
+4. Indentation, stick to one style with the team.
+5. Space between if/while statements. Group the variables that are related. Variables that aren't related should be spaced. If the functions are four lines long, then you don't need very many of the spaces.
+6. As in everything else in software, smaller is better. Keep your file sizes small.
+7. Classes
+   1. The methods of a class manipulate the variables of that class. The more variables within a class that a method manipulates, the more cohesive that method is. A maximally cohesive method manipulates every variable inside the class. A maximally cohesive class is composed of nothing but maximally cohesive methods. Getters and setters are not very cohesive because they only manipulate a single variable each. The more getters and setters a class has, the less cohesive that class is. So, does that mean that a class should never have getters and setters? Dogmatic rules like that seldom apply in engineering disciplines. I certainly write getters and setters from time to time, but I try to minimize them, because I try to maximize cohesion.
+   2.  In those instances where I choose to have a getter, I don't simply expose the variable. I try to abstract out the information being retrieved.
+   3.  To be more specific, polymorphism allows us to protect client code, like CarDriver, from changes to the implementation of server code, like Car. It's pretty easy to write a CarDriver that can drive any derivative of Car, without knowing our caring what that derivative is.
+   4.  Maybe, you're wondering about classes like Employee, that clearly have methods like getName and getAddress that expose the data within them.
+   5. A data structure is kind of the opposite of a class. A data structure has a whole bunch of data variables that are public, and virtually no functions. Do you see the difference here between a class and a data structure? Classes have private variables but public functions. Data structures have public variables and no functions. It might be going a bit too far to say that data structure have no methods. Data structures can have methods. But typically, they're simple things like getters, or setters, or little navigation aids. The methods of a data structure manipulate individual variables. They don't manipulate cohesive groups of variables the way the methods of a class do.
+   6. We use classes and objects when it's types that are more likely to be added. We use data structures and Switch statements when it's methods that are more likely to be added. 
+   7. For years and years, design experts have been telling us that we should design our applications so that they are separated from our databases by some kind of interface layer. This is very good advice. The last thing we want to see is a bunch of SQL code smeared through our application code.
+   8. 

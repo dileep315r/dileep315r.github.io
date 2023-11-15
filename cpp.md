@@ -111,17 +111,17 @@ C++ allows operations with pointers to functions. The typical use of this is for
         } object_names;
     ```
  49.  The size of this type is the one of the largest member element. Each of these members is of a different data type. But since all of them are referring to the same location in memory, the modification of one of the members will affect the value of all of them. It is not possible to store different values in them in a way that each is independent of the others. One of the uses of a union is to be able to access a value either in its entirety or as an array or structure of smaller elements.
-    ```
-         union mix_t {
-          int l;
-          struct {
-            short hi;
-            short lo;
-            } s;
-          char c[4];
-        
-        } mix;
-   ```
+        ```
+           union mix_t {
+              int l;
+              struct {
+                short hi;
+                short lo;
+                } s;
+              char c[4];
+            
+            } mix;
+        ```
  51.  The exact alignment and order of the members of a union in memory depends on the system, with the possibility of creating portability issues.
  52.  When unions are members of a class (or structure), they can be declared with no name. In this case, they become anonymous unions, and its members are directly accessible from objects by their member names. For example, see the differences between these two structure declarations:
 53. Two different enums in C++. enum type and enum class(or struct) types. Later tyoe creates real enums.

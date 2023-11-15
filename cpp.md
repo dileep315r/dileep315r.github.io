@@ -121,7 +121,7 @@ C++ allows operations with pointers to functions. The typical use of this is for
       char c[4];
     
     } mix;
-```
+   ```
  51.  The exact alignment and order of the members of a union in memory depends on the system, with the possibility of creating portability issues.
  52.  When unions are members of a class (or structure), they can be declared with no name. In this case, they become anonymous unions, and its members are directly accessible from objects by their member names. For example, see the differences between these two structure declarations:
 53. Two different enums in C++. enum type and enum class(or struct) types. Later tyoe creates real enums.

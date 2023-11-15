@@ -164,33 +164,33 @@ C++ allows operations with pointers to functions. The typical use of this is for
 87. Member functions can be overloaded on their constness: i.e., a class may have two member functions with identical signatures except that one is const and the other is not: in this case, the const version is called only when the object is itself const, and the non-const version is called when the object is itself non-const.
 88. Just like we can create function templates, we can also create class templates, allowing classes to have members that use template parameters as types. For example. Confused by so many T's? There are three T's in this declaration: The first one is the template parameter. The second T refers to the type returned by the function. And the third T (the one between angle brackets) is also a requirement: It specifies that this function's template parameter is also the class template parameter.
     ```
-     // class templates
-    #include <iostream>
-    using namespace std;
-    
-    template <class T>
-    class mypair {
-        T a, b;
-      public:
-        mypair (T first, T second)
-          {a=first; b=second;}
-        T getmax ();
-    };
-    
-    template <class T>
-    T mypair<T>::getmax ()
-    {
-      T retval;
-      retval = a>b? a : b;
-      return retval;
-    }
-    
-    int main () {
-      mypair <int> myobject (100, 75);
-      cout << myobject.getmax();
-      return 0;
-    }
-```
+            // class templates
+        #include <iostream>
+        using namespace std;
+        
+        template <class T>
+        class mypair {
+            T a, b;
+          public:
+            mypair (T first, T second)
+              {a=first; b=second;}
+            T getmax ();
+        };
+        
+        template <class T>
+        T mypair<T>::getmax ()
+        {
+          T retval;
+          retval = a>b? a : b;
+          return retval;
+        }
+        
+        int main () {
+          mypair <int> myobject (100, 75);
+          cout << myobject.getmax();
+          return 0;
+        }     
+    ```
 89. Template specialization. For example, let's suppose that we have a very simple class called mycontainer that can store one element of any type and that has just one member function called increase, which increases its value. But we find that when it stores an element of type char it would be more convenient to have a completely different implementation with a function member uppercase, so we decide to declare a class template specialization for that type:
 90. Special member functions are member functions that are implicitly defined as member of classes under certain circumstances.
     1. Default constructor

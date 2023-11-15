@@ -102,13 +102,13 @@ C++ allows operations with pointers to functions. The typical use of this is for
 47. Type aliases can be used to reduce the length of long or confusing type names, but they are most useful as tools to abstract programs from the underlying types they use. For example, by using an alias of int to refer to a particular kind of parameter instead of using int directly, it allows for the type to be easily replaced by long (or some other type) in a later version, without having to change every instance where it is used.
 48. Unions allow one portion of memory to be accessed as different data types. Its declaration and use is similar to the one of structures, but its functionality is totally different. This creates a new union type, identified by type_name, in which all its member elements occupy the same physical space in memory. 
     ```
-    union type_name {
-      member_type1 member_name1;
-      member_type2 member_name2;
-      member_type3 member_name3;
-      .
-      .
-    } object_names;
+        union type_name {
+          member_type1 member_name1;
+          member_type2 member_name2;
+          member_type3 member_name3;
+          .
+          .
+        } object_names;
     ```
  49.  The size of this type is the one of the largest member element. Each of these members is of a different data type. But since all of them are referring to the same location in memory, the modification of one of the members will affect the value of all of them. It is not possible to store different values in them in a way that each is independent of the others. One of the uses of a union is to be able to access a value either in its entirety or as an array or structure of smaller elements.
     ```

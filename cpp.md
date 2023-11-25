@@ -256,12 +256,13 @@ C++ allows operations with pointers to functions. The typical use of this is for
 137. The syntax used in the second #include uses quotes, and includes a file. The file is searched for in an implementation-defined manner, which generally includes the current path. In the case that the file is not found, the compiler interprets the directive as a header inclusion, just as if the quotes ("") were replaced by angle-brackets (<>).
 138. Lvalue references (&) refer to existing objects and are commonly used.
 139. Rvalue references (&&) are used for move semantics and efficient resource handling.
+140. Return value optimization.
 
 ### References
 1. https://www.youtube.com/watch?v=4bdp9aHzuQY
 2. https://stackoverflow.com/questions/6775336/does-explicit-keyword-have-any-effect-on-a-default-constructor
 3. https://stackoverflow.com/questions/1305947/why-does-c-need-a-separate-header-file
-
-
-
+4. https://en.wikipedia.org/wiki/Copy_elision#RVO
+5. https://stackoverflow.com/questions/1529447/does-return-statement-copy-values
+6. https://devblogs.microsoft.com/cppblog/improving-copy-and-move-elision/#:~:text=When%20a%20return%20keyword%20in,non%2Dprimitive%20type%20is%20called.
 

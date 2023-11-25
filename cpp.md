@@ -254,7 +254,14 @@ C++ allows operations with pointers to functions. The typical use of this is for
 135. Defined macros are not affected by block structure. A macro lasts until it is undefined with the #undef preprocessor directive:
 136. Conditional inclusions (#ifdef, #ifndef, #if, #endif, #else and #elif): These directives allow to include or discard part of the code of a program if a certain condition is met.
 137. The syntax used in the second #include uses quotes, and includes a file. The file is searched for in an implementation-defined manner, which generally includes the current path. In the case that the file is not found, the compiler interprets the directive as a header inclusion, just as if the quotes ("") were replaced by angle-brackets (<>).
-138. 
+138. Lvalue references (&) refer to existing objects and are commonly used.
+139. Rvalue references (&&) are used for move semantics and efficient resource handling.
+
+### References
+1. https://www.youtube.com/watch?v=4bdp9aHzuQY
+2. https://stackoverflow.com/questions/6775336/does-explicit-keyword-have-any-effect-on-a-default-constructor
+3. https://stackoverflow.com/questions/1305947/why-does-c-need-a-separate-header-file
+
 
 
 

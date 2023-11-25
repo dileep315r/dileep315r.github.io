@@ -267,4 +267,5 @@ C++ allows operations with pointers to functions. The typical use of this is for
 5. https://stackoverflow.com/questions/1529447/does-return-statement-copy-values
 6. https://devblogs.microsoft.com/cppblog/improving-copy-and-move-elision/#:~:text=When%20a%20return%20keyword%20in,non%2Dprimitive%20type%20is%20called.
 7. https://cplusplus.com/reference/memory/shared_ptr/
+8. https://en.cppreference.com/w/cpp/language/copy_elision
 

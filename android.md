@@ -17,6 +17,8 @@
     2. Avoid adding logic to entities that have large dependencies, such as activities and fragments.      3. Use these classes as entry points to the framework and move UI and business logic elsewhere, such as to a Composable, ViewModel, or domain layer.
     4. Avoid direct framework dependencies in classes containing business logic. For example, don't use Android Contexts in ViewModels.
     5. Make dependencies easy to replace. For example, use interfaces instead of concrete implementations. Use Dependency injection even if you don't use a DI framework.
+14. ![img](../_img/android_layers.jpeg)
+15. 
 
 #### References
    1. https://web.archive.org/web/20081217032436/http://code.google.com/android/what-is-android.html

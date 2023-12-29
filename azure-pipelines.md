@@ -39,5 +39,8 @@
           5. https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/key-pipelines-concepts?view=azure-devops
           6. https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/cross-platform-scripting?view=azure-devops&tabs=yaml
    
-      
+      14. Continuous integration(CI) trigger runs the pipeline on the branches/paths specified on the CI trigger.
+      15. Set branch build-validation policies to run pipeline(s) on the pull request merge changes. See [link](https://learn.microsoft.com/en-us/azure/devops/repos/git/branch-policies?view=azure-devops&tabs=browser#build-validation ) for more details.
+      16. 
+
        

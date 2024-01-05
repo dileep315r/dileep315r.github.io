@@ -127,6 +127,9 @@
     5. Example problem: [https://leetcode.com/problems/minimum-path-sum/](https://leetcode.com/problems/minimum-path-sum/), 562 problem
     6. https://leetcode.com/problems/longest-palindromic-subsequence/ problem. Not easy to come up with space optimization ide.
     7. Use bitmask for representing a sub-problem. https://leetcode.com/problems/campus-bikes-ii/ is an interesting problem.
+    8. Lessions learnt
+       1. Start with brute force.
+       2. Dry run the solutiuon if the solution doesn't work out.
 21. Binary search
     1. Pow functions can be computed in O(log n ) time.
     2. Consider the below classic BST routine

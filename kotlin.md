@@ -43,5 +43,12 @@
    3. ```1 until 10``` excludes 10
 9. Kotlin collections
    ![collections](https://kotlinlang.org/docs/images/collections-diagram.png)
-10. 
+10. Code in initializer blocks effectively becomes part of the primary constructor.
+11. If the class has a primary constructor, each secondary constructor needs to delegate to the primary constructor, either directly or indirectly through another secondary constructor(s).
+12. Delegation to the primary constructor happens at the moment of access to the first statement of a secondary constructor, so the code in all initializer blocks and property initializers is executed before the body of the secondary constructor.
+13. Even if the class has no primary constructor, the delegation still happens implicitly, and the initializer blocks are still executed:
+14. Properties: The initializer, getter, and setter are optional. The property type is optional if it can be inferred from the initializer or the getter's return type, as shown below:
+15. Kotlin has a concise syntax for declaring properties and initializing them from the primary constructor:
+16. Property initialization code as well as the initialization blocks in the class body are invoked in the order of appearance in the class body.
+17. 
    

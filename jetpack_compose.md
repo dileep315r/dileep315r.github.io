@@ -17,4 +17,5 @@ You can use Row to arrange items horizontally and Box to stack elements.
 16. To store this local UI state, you need to keep track of whether a message has been expanded or not. To keep track of this state change, you have to use the functions remember and mutableStateOf.
 17. Composable functions can store local state in memory by using remember, and track changes to the value passed to mutableStateOf
 18. Composables (and their children) using this state will get redrawn automatically when the value is updated. This is called recomposition.
-19. 
+19.  Instead of just toggling the background color of the Surface, you will animate the background color by gradually modifying its value from MaterialTheme.colorScheme.surface to MaterialTheme.colorScheme.primary and vice versa. To do so, you will use the animateColorAsState function. Lastly, you will use the animateContentSize modifier to animate the message container size smoothly
+20.  

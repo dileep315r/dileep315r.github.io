@@ -87,3 +87,5 @@ Questions to explore
 4. Does NLB terminate connections at LB and re-uses/maintains connections to the backend server. How does the TCP packets look like after going through NLB?
 5. Does ALB supports non connection termination. How does the TCP packets look like after going through ALB?
 6. Good reference for [AWS NLB source ip presevation](https://www.reddit.com/r/aws/comments/mv41vs/how_do_nlbs_preserve_the_ip_address_of_clients/)
+7. https://www.f5.com/pdf/white-papers/evolution-adc-wp.pdf
+   

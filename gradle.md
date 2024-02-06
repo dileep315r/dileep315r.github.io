@@ -28,7 +28,7 @@
 10. In the initialization phase, Gradle determines which projects are going to take part in a multi-project build. This is usually mentioned in settings.gradle file, which is located in the project root. Gradle also creates instances of the participating projects.
 11. In the configuration phase, all created project instances are configured based on Gradle feature configuration on demand.
 12. Init phase, Configuration phase, Execution phase
-13. 
+13. Source sets partition the sources. Tasks operate on source sets. Attributes can be attached to the sourcesets. Set of dependencies are configured using configuration blocks. Tasks utilize the dependency config 
 
 ### References
 1. https://docs.gradle.org/current/javadoc/org/gradle/api/Project.html
